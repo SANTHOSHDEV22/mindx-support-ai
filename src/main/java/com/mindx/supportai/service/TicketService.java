@@ -21,14 +21,12 @@ public class TicketService {
         this.messageRepository = messageRepository;
     }
 
-    // CREATE TICKET
     public String createTicket(String query) {
 
         if (query == null || query.trim().isEmpty()) {
             throw new RuntimeException("Query cannot be empty");
         }
 
-        // Create ticket
         Ticket ticket = new Ticket();
         ticket.setQuery(query);
         ticket.setStatus(Status.OPEN);
@@ -36,7 +34,6 @@ public class TicketService {
 
         ticketRepository.save(ticket);
 
-        // Save user message
         Message message = new Message();
         message.setTicketId(ticket.getId());
         message.setSender(Sender.USER);
@@ -48,12 +45,12 @@ public class TicketService {
         return "Ticket created successfully";
     }
 
-    // GET ALL TICKETS
+
     public List<Ticket> getAllTickets() {
         return ticketRepository.findAll();
     }
 
-    // GET TICKET DETAILS + MESSAGES
+
     public TicketDetailsDTO getTicketDetails(Long id) {
 
         Ticket ticket = ticketRepository.findById(id)

@@ -18,19 +18,17 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
-    // CREATE TICKET
     @PostMapping
     public String createTicket(@RequestBody TicketRequest request) {
         return ticketService.createTicket(request.getQuery());
     }
 
-    // GET ALL TICKETS
     @GetMapping
     public List<Ticket> getAllTickets() {
         return ticketService.getAllTickets();
     }
 
-    // GET TICKET DETAILS
+
     @GetMapping("/{id}")
     public TicketDetailsDTO getTicket(@PathVariable Long id) {
         return ticketService.getTicketDetails(id);
