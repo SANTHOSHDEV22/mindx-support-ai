@@ -14,11 +14,14 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
     private final MessageRepository messageRepository;
+    private final AiService aiService;
 
     public TicketService(TicketRepository ticketRepository,
-                         MessageRepository messageRepository) {
+                         MessageRepository messageRepository,
+                         AiService aiService) {
         this.ticketRepository = ticketRepository;
         this.messageRepository = messageRepository;
+        this.aiService = aiService;
     }
 
     public String createTicket(String query) {
@@ -27,29 +30,47 @@ public class TicketService {
             throw new RuntimeException("Query cannot be empty");
         }
 
+        String lower = query.toLowerCase();
+
+        Status status = Status.OPEN;
+
+        if (lower.contains("refund") ||
+                lower.contains("complaint") ||
+                lower.contains("angry")) {
+            status = Status.NEEDS_HUMAN;
+        }
+
         Ticket ticket = new Ticket();
         ticket.setQuery(query);
-        ticket.setStatus(Status.OPEN);
+        ticket.setStatus(status);
         ticket.setCreatedAt(LocalDateTime.now());
 
         ticketRepository.save(ticket);
 
-        Message message = new Message();
-        message.setTicketId(ticket.getId());
-        message.setSender(Sender.USER);
-        message.setMessage(query);
-        message.setTimestamp(LocalDateTime.now());
+        Message userMsg = new Message();
+        userMsg.setTicketId(ticket.getId());
+        userMsg.setSender(Sender.USER);
+        userMsg.setMessage(query);
+        userMsg.setTimestamp(LocalDateTime.now());
 
-        messageRepository.save(message);
+        messageRepository.save(userMsg);
 
-        return "Ticket created successfully";
+        String aiReply = aiService.getResponse(query);
+
+        Message aiMsg = new Message();
+        aiMsg.setTicketId(ticket.getId());
+        aiMsg.setSender(Sender.AI);
+        aiMsg.setMessage(aiReply);
+        aiMsg.setTimestamp(LocalDateTime.now());
+
+        messageRepository.save(aiMsg);
+
+        return aiReply;
     }
-
 
     public List<Ticket> getAllTickets() {
         return ticketRepository.findAll();
     }
-
 
     public TicketDetailsDTO getTicketDetails(Long id) {
 

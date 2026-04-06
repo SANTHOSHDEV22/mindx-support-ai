@@ -28,7 +28,6 @@ public class TicketController {
         return ticketService.getAllTickets();
     }
 
-
     @GetMapping("/{id}")
     public TicketDetailsDTO getTicket(@PathVariable Long id) {
         return ticketService.getTicketDetails(id);

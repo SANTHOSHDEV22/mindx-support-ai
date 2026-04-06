@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SupportApplication {
+public class SupportaiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SupportApplication.class, args);
+		SpringApplication.run(SupportaiApplication.class, args);
 	}
 }
