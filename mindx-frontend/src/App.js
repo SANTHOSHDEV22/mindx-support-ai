@@ -17,7 +17,8 @@ function App() {
   const [search, setSearch] = useState("");
 
   const [role, setRole] = useState(localStorage.getItem("role"));
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("role"));
+  //const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("role"));
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");

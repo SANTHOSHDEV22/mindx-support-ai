@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/tickets")
-@CrossOrigin(origins = "*") // allow frontend
+@CrossOrigin(origins = "*")
 public class TicketController {
     private final TicketRepository ticketRepository;
     private final TicketService ticketService;
